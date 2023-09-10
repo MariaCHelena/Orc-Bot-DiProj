@@ -1,0 +1,68 @@
+function onEdit(e) {
+  var range = e.range;
+  var sheet = range.getSheet();
+  var localizacaoCelula = range.getA1Notation();
+  var coluna = localizacaoCelula[0];
+  var linha = parseInt(localizacaoCelula.substr(1));
+  var hora = sheet.getRange(`A${localizacaoCelula.substr(1)}`).getValue();
+  var dia = sheet.getRange(`${coluna}4`).getValue();
+  var nome, assunto;
+  
+  // Verifique se a célula foi editada e se o evento é de duplo clique
+    if (linha % 2 == 1 && sheet.getRange(`${coluna}${parseInt(localizacaoCelula.substr(1)) + 1}`).getValue() !== "Assunto"){
+      nome = e.value;
+      assunto = sheet.getRange(coluna + (parseInt(localizacaoCelula.substr(1)) + 1)).getValue();
+      if (e.oldValue === "Nome"){
+        sendMessage(assunto.trim(), nome.trim(), hora, dia);
+      } else {
+        sendMessageAlter(assunto.trim(), nome.trim(), hora, dia);
+      }
+    } else if (linha % 2 == 0 && sheet.getRange(`${coluna}${parseInt(localizacaoCelula.substr(1)) - 1}`).getValue() !== "Nome"){
+      nome = sheet.getRange(coluna + (parseInt(localizacaoCelula.substr(1)) - 1)).getValue();
+      assunto = e.value;
+      if (e.oldValue === "Assunto"){
+        sendMessage(assunto.trim(), nome.trim(), hora, dia);
+      } else {
+        sendMessageAlter(assunto.trim(), nome.trim(), hora, dia);
+      }
+    }
+}
+
+var apiToken = "6057094984:AAHC_72AV7LD8XnyuIgSBqOjmuqA_pHheOE";
+var appUrl   = "https://script.google.com/macros/s/AKfycbzGw5tERJRhu5mblfcNckR_mmATB5YRw3_Qq2iix3SDPt_0oUQsldC6_03Z3GVFbwJY/exec";
+var apiUrl   = "https://api.telegram.org/bot"+apiToken;
+
+// set webhook
+function setWebhook(){
+  var url = apiUrl + "/setwebhook?url="+appUrl;
+  var res = UrlFetchApp.fetch(url).getContentText();
+  Logger.log(res);
+}
+
+function sendMessage(assunto, nome, horario, dia){
+  var data = {
+    method: "post",
+    payload: {
+      method: "sendMessage",
+      chat_id: '-955844965',
+      text: `Horário marcado:\nO(a) trainee ${nome} reservou um horário das ${horario} no dia ${dia}.\nO assunto da reunião será: "${assunto}"`,
+      parse_mode: "HTML",
+
+    }
+  };
+  var res = UrlFetchApp.fetch('https://api.telegram.org/bot' + apiToken + '/', data);
+}
+
+function sendMessageAlter(assunto, nome, horario, dia){
+  var data = {
+    method: "post",
+    payload: {
+      method: "sendMessage",
+      chat_id: '-955844965',
+      text: `Correção:\nO(a) trainee ${nome} reservou um horário das ${horario} no dia ${dia}.\nO assunto da reunião será: "${assunto}"`,
+      parse_mode: "HTML",
+
+    }
+  };
+  var res = UrlFetchApp.fetch('https://api.telegram.org/bot' + apiToken + '/', data);
+}
