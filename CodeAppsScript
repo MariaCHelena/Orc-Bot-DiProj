@@ -1,4 +1,5 @@
 function onEdit(e) {
+  // Variáveis da planilha
   var range = e.range;
   var sheet = range.getSheet();
   var localizacaoCelula = range.getA1Notation();
@@ -28,17 +29,19 @@ function onEdit(e) {
     }
 }
 
+// Variáveis do bot
 var apiToken = "6597246012:AAEIIk28DEXGxECrjy0jBnlQ3OiR2nVvmdc";
 var appUrl   = "https://script.google.com/macros/s/AKfycbzGw5tERJRhu5mblfcNckR_mmATB5YRw3_Qq2iix3SDPt_0oUQsldC6_03Z3GVFbwJY/exec";
 var apiUrl   = "https://api.telegram.org/bot"+apiToken;
 
-// set webhook
+// set webhook: Código para linkar a API do Bot
 function setWebhook(){
   var url = apiUrl + "/setwebhook?url="+appUrl;
   var res = UrlFetchApp.fetch(url).getContentText();
   Logger.log(res);
 }
 
+// As seguintes funções são métodos para enviar as mensagens para o grupo, de acordo com o "chat_id" passado.
 function sendMessage(assunto, nome, horario, dia){
   var data = {
     method: "post",
