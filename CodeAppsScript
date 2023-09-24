@@ -28,7 +28,7 @@ function onEdit(e) {
     }
 }
 
-var apiToken = "6057094984:AAHC_72AV7LD8XnyuIgSBqOjmuqA_pHheOE";
+var apiToken = "6597246012:AAEIIk28DEXGxECrjy0jBnlQ3OiR2nVvmdc";
 var appUrl   = "https://script.google.com/macros/s/AKfycbzGw5tERJRhu5mblfcNckR_mmATB5YRw3_Qq2iix3SDPt_0oUQsldC6_03Z3GVFbwJY/exec";
 var apiUrl   = "https://api.telegram.org/bot"+apiToken;
 
@@ -44,7 +44,7 @@ function sendMessage(assunto, nome, horario, dia){
     method: "post",
     payload: {
       method: "sendMessage",
-      chat_id: '-955844965',
+      chat_id: '-4010539847',
       text: `Horário marcado:\nO(a) trainee ${nome} reservou um horário das ${horario} no dia ${dia}.\nO assunto da reunião será: "${assunto}"`,
       parse_mode: "HTML",
 
@@ -58,7 +58,7 @@ function sendMessageAlter(assunto, nome, horario, dia){
     method: "post",
     payload: {
       method: "sendMessage",
-      chat_id: '-955844965',
+      chat_id: '-4010539847',
       text: `Correção:\nO(a) trainee ${nome} reservou um horário das ${horario} no dia ${dia}.\nO assunto da reunião será: "${assunto}"`,
       parse_mode: "HTML",
 
